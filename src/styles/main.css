@@ -1,0 +1,34 @@
+div:where(.swal2-container).swal2-center>.swal2-popup {
+    grid-column: 2;
+    grid-row: 2;
+    place-self: center center;
+    border-radius: 20px !important;
+}
+div:where(.swal2-container) div:where(.swal2-html-container) {
+    z-index: 1;
+    justify-content: center;
+    margin: 0;
+    padding: 1em 1.6em .3em;
+    overflow: auto;
+    color: inherit;
+    font-size: 14px !important;
+    font-weight: normal;
+    line-height: normal;
+    text-align: center;
+    word-wrap: break-word;
+    word-break: break-word;
+    cursor: initial;
+}
+div:where(.swal2-container) h2:where(.swal2-title) {
+    position: relative;
+    max-width: 100%;
+    margin: 0;
+    padding: .8em 1em 0;
+    color: inherit;
+    font-size: 22px !important;
+    font-weight: 600;
+    text-align: center;
+    text-transform: none;
+    word-wrap: break-word;
+    cursor: initial;
+}
