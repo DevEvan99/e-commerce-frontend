@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { jwtDecode } from "jwt-decode";
 
 
 const  MainPage  = () => {
@@ -30,24 +29,20 @@ const  MainPage  = () => {
     fetchProducts();
   }, []);
 
-  // Add to favorites function
+  // Add & Remove to favorites function
   const toggleFavorite = async (product) => {
     try {
-      // Get the existing favorites from localStorage
       const storedFavorites = JSON.parse(localStorage.getItem("favoriteProducts")) || [];
       const isFavorite = storedFavorites.some((fav) => fav._id === product._id);
   
       const updatedFavorites = isFavorite
-        ? storedFavorites.filter((fav) => fav._id !== product._id) // Remove product
-        : [...storedFavorites, product]; // Add product
+        ? storedFavorites.filter((fav) => fav._id !== product._id)
+        : [...storedFavorites, product]; 
   
-      // Update localStorage
       localStorage.setItem("favoriteProducts", JSON.stringify(updatedFavorites));
   
-      // Extract product IDs for backend update
       const productIds = updatedFavorites.map((fav) => fav._id);
   
-      // Send the updated favorites to the backend
       const token = localStorage.getItem("token");
       await axios.post(
         "http://localhost:5000/api/favorites/update",
@@ -67,9 +62,12 @@ const  MainPage  = () => {
           : `${product.name} added to favorites!`,
         text: "Your favorites have been updated.",
         confirmButtonText: "OK",
+        customClass: {
+          confirmButton: 'bg-[#001EB9] text-white px-6 py-2 rounded-sm mx-4',
+        },
+        buttonsStyling: false,
       }).then(() => {
-        // Reload the page after the alert is closed
-        window.location.reload(); // Refresh the page
+        window.location.reload();
       });
     } catch (error) {
       console.error(error);
@@ -216,11 +214,11 @@ const  MainPage  = () => {
                         </button>
                         <button
                           onClick={() => toggleFavorite(product)}
-                          className={`px-4 py-2 rounded-lg ${
-                            isFavorite ? "bg-red-500 text-white" : "bg-blue-500 text-white"
+                          className={`px-4 py-4 rounded-lg hover:bg-slate-200 transition-colors duration-300 ${
+                            isFavorite ? "bg-slate-200" : "bg-transparent"
                           }`}
                         >
-                          {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+                          <img src="/assets/icon/star.svg" className="w-5" />
                         </button>
                       </div>
                     </td>

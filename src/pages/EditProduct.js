@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../styles/main.css';
+import Swal from "sweetalert2";
 
 const EditProduct = () => {
-  const { id } = useParams(); // Get product ID from URL
+  const { id } = useParams(); 
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [formData, setFormData] = useState({
@@ -15,9 +16,9 @@ const EditProduct = () => {
     quantity: "",
     thumbnail: "",
   });
-  const [selectedImages, setSelectedImages] = useState([]); // New images
-  const [imagePreviews, setImagePreviews] = useState([]); // New image previews
-  const [existingImages, setExistingImages] = useState([]); // Existing images
+  const [selectedImages, setSelectedImages] = useState([]); 
+  const [imagePreviews, setImagePreviews] = useState([]); 
+  const [existingImages, setExistingImages] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -33,9 +34,9 @@ const EditProduct = () => {
           description: response.data.description,
           price: response.data.price,
           quantity: response.data.quantity,
-          thumbnail: response.data.thumbnail, // Set initial thumbnail
+          thumbnail: response.data.thumbnail, 
         });
-        setExistingImages(response.data.images || []); // Load existing images
+        setExistingImages(response.data.images || []); 
         setLoading(false);
       } catch (err) {
         setError(err.response?.data?.message || "Error fetching product details");
@@ -86,10 +87,25 @@ const EditProduct = () => {
       const response = await axios.put(`http://localhost:5000/api/products/${id}`, form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("Product updated successfully!");
-      navigate(`/product/${id}`); // Navigate to product details page
+      Swal.fire ({
+        title: 'Product updated successfully!',
+        text: "Your product details are updated",
+        icon: 'success',
+        confirmButtonText: 'OK',
+        customClass: {
+          confirmButton: 'bg-[#001EB9] text-white px-6 py-2 rounded-sm mx-4',   
+        },
+        buttonsStyling: false,
+      }).then (() => {
+        navigate(`/product/${id}`);
+      })
     } catch (err) {
       setError(err.response?.data?.message || "Error updating product");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to update favorites. Please try again.",
+      });
     }
   };
 

@@ -46,26 +46,34 @@ const ProductDetails = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-4 bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
-      >
-        Back
-      </button>
+      <div className="flex items-center gap-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="bg-transparent flex items-center gap-2"
+        >
+          <img src="/assets/icon/arrow.svg" className="w-5 rotate-180"></img>
+          Back
+        </button>
+        <h1 className="text-md font-bold">{product.name}</h1>
+      </div>
 
-      <div className="bg-white p-6 rounded-lg shadow-md">
+
+      <div className="grid grid-cols-2 gap-x-14 mt-6">
         {product.images && product.images.length > 0 && (
           <img
             src={`http://localhost:5000${product.images[0]}`}
             alt={product.name}
-            className="w-full h-64 object-cover rounded-lg mb-4"
+            className="w-full h-full object-cover rounded-lg mb-4"
           />
         )}
-        <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
+        <div>
+        <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
         <p className="text-gray-700 mb-4">{product.description}</p>
-        <p className="text-lg font-bold text-blue-600 mb-4">${product.price.toFixed(2)}</p>
+        <p className="text-2xl font-bold text-blue-600 mb-4">${product.price.toFixed(2)}</p>
         <p className="text-sm text-gray-500">Stock: {product.quantity}</p>
         <p className="text-sm text-gray-500">SKU: {product.sku}</p>
+        </div>
+
       </div>
     </div>
   );
