@@ -28,6 +28,8 @@ const EditProduct = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/products/${id}`);
         setProduct(response.data);
+        console.log(response.data);
+
         setFormData({
           sku: response.data.sku,
           name: response.data.name,
@@ -36,6 +38,7 @@ const EditProduct = () => {
           quantity: response.data.quantity,
           thumbnail: response.data.thumbnail, 
         });
+        
         setExistingImages(response.data.images || []); 
         setLoading(false);
       } catch (err) {
@@ -131,19 +134,20 @@ const EditProduct = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex items-center gap-2">
-        <a href="/" className="text-3xl font-bold">PRODUCTS</a>
-        <img src="/assets/icon/arrow.svg" className="w-5"></img>
-        <label className="text-[#001EB9] font-semibold text-lg">Edit product</label>
+      <div className="flex flex-wrap items-center gap-2">
+        <a href="/" className="text-2xl sm:text-3xl font-bold">PRODUCTS</a>
+        <img src="/assets/icon/arrow.svg" className="w-4 sm:w-5"></img>
+        <label className="text-[#001EB9] font-semibold text-base sm:text-lg">Edit product</label>
       </div>
-
-      <form onSubmit={handleSubmit} 
-        className="grid grid-cols-2 mt-6 text-sm gap-x-20 gap-y-10 text-[#162427] font-medium"
-        >
+  
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 sm:grid-cols-2 mt-6 text-sm gap-x-6 sm:gap-x-20 gap-y-6 sm:gap-y-10 text-[#162427] font-medium"
+      >
         {/* SKU */}
-        <div className="flex items-center gap-10">
-        <label className=" ">SKU</label>
-        <input
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-10">
+          <label className="mb-2 sm:mb-0">SKU</label>
+          <input
             type="text"
             name="sku"
             value={formData.sku}
@@ -151,11 +155,11 @@ const EditProduct = () => {
             className="w-full p-2 bg-[#F7F7F7] rounded-md focus:ring-2 focus:ring-blue-600 focus-visible:outline-none"
           />
         </div>
-
+  
         {/* Price */}
-        <div className="flex items-center gap-8">
-        <label className="">Price</label>
-        <input
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-8">
+          <label className="mb-2 sm:mb-0">Price</label>
+          <input
             type="number"
             name="price"
             value={formData.price}
@@ -163,11 +167,11 @@ const EditProduct = () => {
             className="w-full p-2 bg-[#F7F7F7] rounded-md focus:ring-2 focus:ring-blue-600 focus-visible:outline-none"
           />
         </div>
-
+  
         {/* Name */}
-        <div className="flex items-center gap-7">
-        <label className="">Name</label>
-        <input
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-7">
+          <label className="mb-2 sm:mb-0">Name</label>
+          <input
             type="text"
             name="name"
             value={formData.name}
@@ -175,11 +179,11 @@ const EditProduct = () => {
             className="w-full p-2 bg-[#F7F7F7] rounded-md focus:ring-2 focus:ring-blue-600 focus-visible:outline-none"
           />
         </div>
-
+  
         {/* Quantity */}
-        <div className="flex items-center gap-9">
-        <label className=" ">QTY</label>
-        <input
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-9">
+          <label className="mb-2 sm:mb-0">QTY</label>
+          <input
             type="number"
             name="quantity"
             value={formData.quantity}
@@ -187,11 +191,13 @@ const EditProduct = () => {
             className="w-full p-2 bg-[#F7F7F7] rounded-md focus:ring-2 focus:ring-blue-600 focus-visible:outline-none"
           />
         </div>
-
+  
         {/* Description */}
-        <div className="flex flex-col col-span-2">
-        <label className="">Product Description</label>
-        <label className="text-[#969191] text-xs font-normal mt-2">A small description about the product</label>
+        <div className="flex flex-col col-span-1 sm:col-span-2">
+          <label className="">Product Description</label>
+          <label className="text-[#969191] text-xs font-normal mt-2">
+            A small description about the product
+          </label>
           <textarea
             name="description"
             value={formData.description}
@@ -200,30 +206,29 @@ const EditProduct = () => {
             rows="4"
           ></textarea>
         </div>
-
-
-
-
+  
         {/* Existing Images */}
-        <div className="col-span-2 flex gap-4">
-          <div className="flex flex-col">
-            <label className="">Product Images</label>
-            <label className="text-[#969191] text-xs font-normal mt-2">JPEG, PNG, SVG or GIF <br />(Maximum file size 50MB)</label>
+        <div className="flex flex-col xl:flex-row gap-4">
+          <div className="flex flex-col sm:flex-col sm:items-start sm:gap-4">
+            <label>Product Images</label>
+            <label className="text-[#969191] text-xs font-normal mt-2 sm:mt-0">
+              JPEG, PNG, SVG or GIF <br />(Maximum file size 50MB)
+            </label>
           </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+  
+          <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {existingImages.map((image, index) => (
               <div
                 key={index}
-                className={`border ${
+                className={`w-16 h-16 border ${
                   formData.thumbnail === image ? "border-blue-500" : "border-gray-300"
                 } rounded-lg p-1 cursor-pointer`}
-                onClick={() => handleSetThumbnail(image)} // Set thumbnail on click
+                onClick={() => handleSetThumbnail(image)}
               >
                 <img
                   src={`http://localhost:5000/${image}`}
                   alt={`Existing Image ${index + 1}`}
-                  className="w-16 h-16 object-cover rounded"
+                  className="w-full h-full object-cover rounded"
                 />
                 {formData.thumbnail === image && (
                   <p className="text-xs text-blue-500 text-center mt-1">Thumbnail</p>
@@ -231,42 +236,40 @@ const EditProduct = () => {
               </div>
             ))}
           </div>
-
-          {/* New Images */}
-          <div className="flex flex-col gap-4">
-          {/* Hidden File Input */}
+        </div>
+  
+        {/* New Images */}
+        <div className="flex flex-col sm:flex-col xl:flex-row md:items-center gap-4">
           <input
             type="file"
             multiple
             accept="image/*"
             onChange={handleImageChange}
             className="hidden"
-            id="fileInput" // Unique ID to reference programmatically
+            id="fileInput"
           />
-
-          {/* Edit Images Button */}
           <button
             type="button"
-            onClick={() => document.getElementById("fileInput").click()} // Trigger hidden input
-            className="text-[#001EB9] underline"          >
+            onClick={() => document.getElementById("fileInput").click()}
+            className="text-[#001EB9] underline"
+          >
             Edit Images
           </button>
-
-          {/* New Image Previews */}
+  
           {imagePreviews.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {imagePreviews.map((preview, index) => (
                 <div
                   key={index}
-                  className={`border ${
+                  className={`w-16 h-16 border ${
                     formData.thumbnail === preview ? "border-blue-500" : "border-gray-300"
                   } rounded-lg p-1 cursor-pointer`}
-                  onClick={() => handleSetThumbnail(preview)} // Set thumbnail on click
+                  onClick={() => handleSetThumbnail(preview)}
                 >
                   <img
                     src={preview}
                     alt={`Preview ${index + 1}`}
-                    className="w-16 h-16 object-cover rounded"
+                    className="w-full h-full object-cover rounded"
                   />
                   {formData.thumbnail === preview && (
                     <p className="text-xs text-blue-500 text-center mt-1">Thumbnail</p>
@@ -275,23 +278,20 @@ const EditProduct = () => {
               ))}
             </div>
           )}
-          </div>
-
         </div>
-
-        <div className="col-start-2 flex justify-end items-end">          
-          {/* Submit Button */}
+  
+        <div className="col-span-1 sm:col-span-2 flex justify-end">
           <button
             type="submit"
-            className="py-2 px-14 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+            className="py-2 px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             Update Product
           </button>
         </div>
-        
       </form>
     </div>
   );
+  
 };
 
 export default EditProduct;

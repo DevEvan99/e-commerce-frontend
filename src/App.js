@@ -8,7 +8,6 @@ import MainPage from "./pages/MainPage";
 import AddProduct from "./pages/AddProduct";
 import EditProduct from "./pages/EditProduct";
 import ProductDetails from "./pages/ProductDetail";
-import FavoriteProducts from "./pages/FavoriteProducts";
 
 
 
@@ -36,7 +35,6 @@ function App() {
           <Route path="/add-product" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
           <Route path="/edit-product/:id" element={<ProtectedRoute><EditProduct/></ProtectedRoute>} />
           <Route path="/product/:id" element={<ProtectedRoute><ProductDetails /></ProtectedRoute>} />
-          <Route path="/favorites" element={<ProtectedRoute><FavoriteProducts/></ProtectedRoute>} />
         </Routes>
       </main>
     </Router>

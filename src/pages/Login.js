@@ -17,7 +17,7 @@ const Login = ({ setToken }) => {
       setToken(response.data.token);
       navigate(`/`);
     } catch (err) {
-      setError(err.response?.data?.message || "Error logging in");
+      setError(err.message );
     }
   };
 

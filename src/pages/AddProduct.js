@@ -1,8 +1,11 @@
 import React, { useState, useRef  } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Navigate } from "react-router-dom";
 
 const AddProduct = () => {
+  const navigate = useNavigate();
   const [productData, setProductData] = useState({
     sku: "",
     name: "",
@@ -46,17 +49,14 @@ const AddProduct = () => {
     setSuccess(false);
 
     try {
-      // Create FormData object
       const formData = new FormData();
       
-      // Append product data
       formData.append('sku', productData.sku);
       formData.append('name', productData.name);
       formData.append('description', productData.description);
       formData.append('price', productData.price);
       formData.append('quantity', productData.quantity);
       
-      // Append images
       images.forEach((image) => {
         formData.append('images', image);
       });
@@ -82,8 +82,10 @@ const AddProduct = () => {
           confirmButton: 'bg-[#001EB9] text-white px-6 py-2 rounded-sm mx-4',
         },
         buttonsStyling: false,
+      }).then(() => {
+        navigate(`/`);
       });
-      // Reset form
+
       setProductData({ 
         sku: "", 
         name: "", 
@@ -115,19 +117,19 @@ const AddProduct = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex items-center gap-2">
-      <a href="/" className="text-3xl font-bold">PRODUCTS</a>
-        <img src="/assets/icon/arrow.svg" className="w-5"></img>
-        <label className="text-[#001EB9] font-semibold text-lg">Add new product</label>
+      <div className="flex flex-wrap items-center gap-2">
+        <a href="/" className="text-2xl sm:text-3xl font-bold">PRODUCTS</a>
+        <img src="/assets/icon/arrow.svg" className="w-4 sm:w-5"></img>
+        <label className="text-[#001EB9] font-semibold text-base sm:text-lg">Add new product</label>
       </div>
-
+  
       <form
         onSubmit={handleSubmit}
-        className="grid grid-cols-2 mt-6 text-sm gap-x-20 gap-y-10 text-[#162427] font-medium"
+        className="grid grid-cols-1 sm:grid-cols-2 mt-6 text-sm gap-x-6 sm:gap-x-20 gap-y-6 sm:gap-y-10 text-[#162427] font-medium"
       >
         {/* SKU */}
-        <div className="flex items-center gap-10">
-          <label className=" ">SKU</label>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-10">
+          <label className="mb-2 sm:mb-0">SKU</label>
           <input
             type="text"
             name="sku"
@@ -137,10 +139,10 @@ const AddProduct = () => {
             required
           />
         </div>
-
+  
         {/* Price */}
-        <div className="flex items-center gap-8">
-          <label className="">Price</label>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-8">
+          <label className="mb-2 sm:mb-0">Price</label>
           <input
             type="number"
             name="price"
@@ -151,10 +153,10 @@ const AddProduct = () => {
             required
           />
         </div>
-
+  
         {/* Product Name */}
-        <div className="flex items-center gap-7">
-          <label className="">Name</label>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-7">
+          <label className="mb-2 sm:mb-0">Name</label>
           <input
             type="text"
             name="name"
@@ -164,11 +166,10 @@ const AddProduct = () => {
             required
           />
         </div>
-
-        
+  
         {/* QTY */}
-        <div className="flex items-center gap-9">
-          <label className=" ">QTY</label>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-9">
+          <label className="mb-2 sm:mb-0">QTY</label>
           <input
             type="number"
             name="quantity"
@@ -178,10 +179,10 @@ const AddProduct = () => {
             required
           />
         </div>
-
+  
         {/* Description */}
-        <div className="flex flex-col col-span-2">
-          <label className="">Product Description</label>
+        <div className="flex flex-col col-span-1 sm:col-span-2">
+          <label>Product Description</label>
           <label className="text-[#969191] text-xs font-normal mt-2">A small description about the product</label>
           <textarea
             name="description"
@@ -192,12 +193,11 @@ const AddProduct = () => {
             required
           ></textarea>
         </div>
-
+  
         {/* Image Upload */}
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-20">
-            <label className="block ">Product Images</label>
-            {/* Custom Button */}
+        <div className="flex flex-col col-span-1 sm:col-span-2 gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-20">
+            <label>Product Images</label>
             <button
               type="button"
               onClick={handleButtonClick}
@@ -205,23 +205,22 @@ const AddProduct = () => {
             >
               Add Images
             </button>
-
-            {/* Hidden File Input */}
             <input
               type="file"
               multiple
               accept="image/*"
               onChange={handleImageUpload}
-              ref={fileInputRef} 
-              className="hidden"  
+              ref={fileInputRef}
+              className="hidden"
               required
             />
           </div>
-          <label className="text-[#969191] text-xs font-normal ">JPEG, PNG, SVG or GIF <br />(Maximum file size 50MB)</label>
-          
-          {/* Image Previews */}
+          <label className="text-[#969191] text-xs font-normal">
+            JPEG, PNG, SVG or GIF <br />(Maximum file size 50MB)
+          </label>
+  
           {imagePreviews.length > 0 && (
-            <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 w-fit">
               {imagePreviews.map((preview, index) => (
                 <img
                   key={index}
@@ -233,25 +232,24 @@ const AddProduct = () => {
             </div>
           )}
         </div>
-
-        {/* Submit Button */}
-        <div className="flex justify-end items-end">
+  
+        <div className="col-span-1 sm:col-span-2 flex justify-end items-end">
           <button
             type="submit"
             disabled={loading}
             className={`py-2 px-14 rounded-lg text-white ${
-              loading 
-                ? 'bg-blue-400 cursor-not-allowed' 
+              loading
+                ? 'bg-blue-400 cursor-not-allowed'
                 : 'bg-blue-600 hover:bg-blue-700'
             }`}
           >
             {loading ? 'Adding Product...' : 'Add Product'}
           </button>
         </div>
-        
       </form>
     </div>
   );
+  
 };
 
 export default AddProduct;

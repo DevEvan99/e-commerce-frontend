@@ -14,6 +14,7 @@ const ProductDetails = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/products/${id}`);
         setProduct(response.data);
+        console.log(response.data);
         setLoading(false);
       } catch (err) {
         setError(err.response?.data?.message || "Error fetching product details");
@@ -58,7 +59,8 @@ const ProductDetails = () => {
       </div>
 
 
-      <div className="grid grid-cols-2 gap-x-14 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-14 mt-6">
+        <div className="w-2/3 md:w-full md:h-3/4">
         {product.images && product.images.length > 0 && (
           <img
             src={`http://localhost:5000${product.images[0]}`}
@@ -66,6 +68,7 @@ const ProductDetails = () => {
             className="w-full h-full object-cover rounded-lg mb-4"
           />
         )}
+        </div>
         <div>
         <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
         <p className="text-gray-700 mb-4">{product.description}</p>
